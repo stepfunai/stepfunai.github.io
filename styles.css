@@ -68,7 +68,7 @@
   
   .blog-item {
     background: white;
-    padding: 200px;
+    padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -90,5 +90,50 @@
     justify-content: space-between;
     font-size: 14px;
     color: #888;
+  }
+  
+  
+  /* Tab 样式 */
+.tabs {
+    margin: 20px;
+  }
+  
+  .tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    padding: 10px 20px;
+    background: #ddd;
+    border: 1px solid #bbb;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  .tab-button.active {
+    background: #6e7fcd;
+    color: white;
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-panel.active {
+    display: block;
+  }
+  
+  /* 返回链接样式 */
+  .back-link {
+    display: inline-block;
+    margin: 20px 0;
+    text-decoration: none;
+    color: #6e7fcd;
+    font-size: 16px;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
   }
   
