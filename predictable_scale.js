@@ -1,17 +1,17 @@
 // 选项卡切换功能
 function initTabs() {
   document.querySelectorAll('.tab-button').forEach(button => {
-      button.addEventListener('click', () => {
-          const tabId = button.dataset.tab;
-          
-          // 移除所有相关元素的active类
-          document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-          document.querySelectorAll('.tab-pane').forEach(content => content.classList.remove('active'));
-          
-          // 添加active类
-          button.classList.add('active');
-          document.getElementById(tabId).classList.add('active');
-      });
+    button.addEventListener('click', () => {
+      const tabId = button.dataset.tab;
+
+      // 移除所有active状态
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(content => content.classList.remove('active'));
+
+      // 设置当前激活状态
+      button.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    });
   });
 }
 
@@ -74,13 +74,21 @@ function initVisualization() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  initTabs();          // 只需初始化一次
+  initVisualization();
+
+  // 设置默认激活状态（仅在初次加载时）
+  if (!document.querySelector('.tab-button.active')) {
+    document.querySelector('.tab-button').classList.add('active');
+    document.querySelector('.tab-pane').classList.add('active');
+  }
+});
+
 
 // 表单提交事件
 document.getElementById('modelForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  initTabs();
-  initVisualization();
-
   // 默认显示第一个选项卡（确保只有一个active）
   document.querySelector('.tab-button').classList.add('active');
   document.querySelector('.tab-pane').classList.add('active');
