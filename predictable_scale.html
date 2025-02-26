@@ -16,34 +16,59 @@
 
         <div class="tab-content">
             <div id="tab1" class="tab-pane active">
-                <h2>模型参数计算</h2>
+                <h2>Traning</h2>
                 <form id="modelForm">
                     <div>
-                        <label for="modelSize">模型规模 (参数数量):</label>
+                        <label for="modelSize">Model Size</label>
                         <input type="number" id="modelSize" placeholder="例如：1000000" required>
                     </div>
                     <div>
-                        <label for="trainingTokens">训练Tokens数量:</label>
+                        <label for="trainingTokens">Training Tokens</label>
                         <input type="number" id="trainingTokens" placeholder="例如：5000000" required>
                     </div>
-                    <button type="submit">开始计算</button>
+                    <button type="submit">Calculate</button>
                 </form>
 
                 <div id="result">
-                    <h3>计算结果</h3>
+                    <h3>Results</h3>
                     <p id="bsValue">BS: -</p>
                     <p id="lrValue">LR: -</p>
                 </div>
             </div>
 
             <div id="tab2" class="tab-pane">
-                <h2>信息展示</h2>
-                <p>这是第二个选项卡的内容区域。</p>
-                <ul>
-                    <li>示例列表项一</li>
-                    <li>示例列表项二</li>
-                    <li>示例列表项三</li>
-                </ul>
+                <h2>参数可视化</h2>
+                <div class="configurator">
+                    <div class="selector-group">
+                        <div class="select-item">
+                            <label>Model Type</label>
+                            <select id="modelType" class="styled-select">
+                                <option value="moe">Moe</option>
+                                <option value="dense">Dense</option>
+                            </select>
+                        </div>
+                        <div class="select-item">
+                            <label>N</label>
+                            <select id="nValue" class="styled-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="select-item">
+                            <label>D</label>
+                            <select id="dValue" class="styled-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="generateBtn" class="visualize-btn">Generate</button>
+                    <div id="visualization" class="visualization-container">
+                        <div class="placeholder-graph"></div>
+                    </div>
+                </div>
             </div>
 
             <div id="tab3" class="tab-pane">
