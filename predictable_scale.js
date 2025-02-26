@@ -1,22 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // 获取所有 Tab 按钮和 Tab 内容
-  const buttons = document.querySelectorAll('.tab-button');
-  const panels = document.querySelectorAll('.tab-panel');
+// Tab切换功能
+document.querySelectorAll('.tab-button').forEach(button => {
+  button.addEventListener('click', () => {
+      const tabId = button.dataset.tab;
+      
+      // 移除所有按钮的激活状态
+      document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active');
+      });
+      
+      // 隐藏所有内容区域
+      document.querySelectorAll('.tab-pane').forEach(content => {
+          content.classList.remove('active');
+      });
 
-  // 添加事件监听器以切换 Tab
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      // 移除所有按钮的 active 类
-      buttons.forEach(btn => btn.classList.remove('active'));
-      // 隐藏所有内容
-      panels.forEach(panel => panel.classList.remove('active'));
-      
-      // 激活当前点击的按钮
+      // 激活当前按钮和内容
       button.classList.add('active');
-      
-      // 显示对应的 Tab 内容
-      const tabId = button.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
-    });
   });
 });
