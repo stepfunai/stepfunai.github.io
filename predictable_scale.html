@@ -3,42 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>选项卡页面</title>
+    <title>Predictable Scale</title>
     <link rel="stylesheet" href="styles2.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="tab-container">
-        <!-- 选项卡导航 -->
         <nav class="tab-nav">
-            <button class="tab-button active" data-tab="tab1">选项一</button>
-            <button class="tab-button" data-tab="tab2">选项二</button>
-            <button class="tab-button" data-tab="tab3">选项三</button>
+            <button class="tab-button active" data-tab="tab1">tab1</button>
+            <button class="tab-button" data-tab="tab2">tab2</button>
+            <button class="tab-button" data-tab="tab3">tab3</button>
         </nav>
 
-        <!-- 选项卡内容 -->
         <div class="tab-content">
             <div id="tab1" class="tab-pane active">
-                <h2>标题</h2>
+                <h2>模型参数计算</h2>
                 <form id="modelForm">
-                    <label for="modelSize">Model Size:</label>
-                    <input type="number" id="modelSize" placeholder="请输入Model Size" required>
-
-                    <label for="trainingTokens">Training Tokens:</label>
-                    <input type="number" id="trainingTokens" placeholder="请输入Training Tokens" required>
-
-                    <button type="submit">计算 BS 和 LR</button>
+                    <div>
+                        <label for="modelSize">模型规模 (参数数量):</label>
+                        <input type="number" id="modelSize" placeholder="例如：1000000" required>
+                    </div>
+                    <div>
+                        <label for="trainingTokens">训练Tokens数量:</label>
+                        <input type="number" id="trainingTokens" placeholder="例如：5000000" required>
+                    </div>
+                    <button type="submit">开始计算</button>
                 </form>
 
                 <div id="result">
-                    <h3>计算结果：</h3>
-                    <p id="bsValue">BS: </p>
-                    <p id="lrValue">LR: </p>
+                    <h3>计算结果</h3>
+                    <p id="bsValue">BS: -</p>
+                    <p id="lrValue">LR: -</p>
                 </div>
             </div>
 
             <div id="tab2" class="tab-pane">
-                <h2>第二个选项卡</h2>
+                <h2>信息展示</h2>
                 <p>这是第二个选项卡的内容区域。</p>
                 <ul>
                     <li>示例列表项一</li>
@@ -48,7 +47,7 @@
             </div>
 
             <div id="tab3" class="tab-pane">
-                <h2>第三个选项卡</h2>
+                <h2>扩展功能</h2>
                 <p>第三个选项卡的演示内容区域。</p>
                 <div class="card">
                     <p>可以在这里添加卡片式布局、图片或其他复杂内容</p>
