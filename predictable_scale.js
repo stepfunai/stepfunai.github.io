@@ -16,64 +16,61 @@ function initTabs() {
 }
 
 // 初始化可视化功能
+// scripts.js 修改后的可视化功能
 function initVisualization() {
   const generateBtn = document.getElementById('generateBtn');
   const vizContainer = document.getElementById('visualization');
 
   generateBtn.addEventListener('click', () => {
-      // 获取选择的值
+      // 获取参数值
       const modelType = document.getElementById('modelType').value;
       const nValue = document.getElementById('nValue').value;
       const dValue = document.getElementById('dValue').value;
 
-      // 清除旧图表
+      // 清除旧内容
       vizContainer.innerHTML = '';
 
-      // 创建新图表容器
-      const canvas = document.createElement('div');
-      canvas.className = 'generated-graph';
-      canvas.innerHTML = `
-          <div class="graph-label" style="top: 20px; left: 20px">类型: ${modelType}</div>
-          <div class="graph-label" style="top: 20px; right: 20px">N=${nValue}</div>
-          <div class="graph-label" style="bottom: 20px; left: 20px">D=${dValue}</div>
-      `;
+      // 创建PDF容器
+      const container = document.createElement('div');
+      container.className = 'generated-pdf-container';
+    
+      // 生成文件名（根据实际文件命名规则调整）
+      const fileName = `${modelType}_n${nValue}_d${dValue}.pdf`;
+      const pdfPath = `figures/${fileName}`;
 
-      // 添加动态可视化效果
-      const baseColor = modelType === 'moe' ? '#1a73e8' : '#e81a4f';
-      const visual = document.createElement('div');
-      visual.style.width = '100%';
-      visual.style.height = '100%';
-      visual.style.position = 'relative';
-      
-      // 创建动态图形（示例使用CSS实现）
-      for(let i = 0; i < nValue / 10; i++) {
-          const element = document.createElement('div');
-          element.style.position = 'absolute';
-          element.style.width = `${dValue / 2}%`;
-          element.style.height = `${dValue / 2}%`;
-          element.style.background = baseColor;
-          element.style.opacity = '0.6';
-          element.style.borderRadius = '4px';
-          element.style.left = `${Math.random() * 90}%`;
-          element.style.top = `${Math.random() * 90}%`;
-          element.style.animation = `float ${Math.random() * 3 + 2}s infinite`;
-          visual.appendChild(element);
-      }
+      // 创建PDF展示元素
+      const embed = document.createElement('embed');
+      embed.className = 'generated-pdf';
+      embed.setAttribute('src', pdfPath);
+      embed.setAttribute('type', 'application/pdf');
+      embed.setAttribute('width', '100%');
+      embed.setAttribute('height', '100%');
 
-      canvas.appendChild(visual);
-      vizContainer.appendChild(canvas);
+      // 错误处理
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'pdf-error';
+      errorMsg.style.display = 'none';
+      errorMsg.textContent = `文件 ${fileName} 加载失败，请检查参数组合`;
 
-      // 添加浮动动画
-      const style = document.createElement('style');
-      style.textContent = `
-          @keyframes float {
-              0%, 100% { transform: translate(0, 0); }
-              25% { transform: translate(5px, 5px); }
-              50% { transform: translate(-5px, 10px); }
-              75% { transform: translate(10px, -5px); }
-          }
-      `;
-      document.head.appendChild(style);
+      // 加载状态
+      const loading = document.createElement('div');
+      loading.className = 'pdf-loading';
+      loading.textContent = '正在加载可视化文件...';
+      container.appendChild(loading);
+
+      // 检测PDF加载状态
+      embed.onload = () => {
+          loading.style.display = 'none';
+          errorMsg.style.display = 'none';
+      };
+      embed.onerror = () => {
+          loading.style.display = 'none';
+          errorMsg.style.display = 'block';
+      };
+
+      container.appendChild(embed);
+      container.appendChild(errorMsg);
+      vizContainer.appendChild(container);
   });
 }
 
