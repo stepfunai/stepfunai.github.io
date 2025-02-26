@@ -1,41 +1,63 @@
-// Tab切换功能
+// 更新后的JavaScript
 document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => {
-        const tabId = button.dataset.tab;
-        
-        // 移除所有按钮的激活状态
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // 隐藏所有内容区域
-        document.querySelectorAll('.tab-pane').forEach(content => {
-            content.classList.remove('active');
-        });
-
-        // 激活当前按钮和内容
-        button.classList.add('active');
-        document.getElementById(tabId).classList.add('active');
-    });
+  button.addEventListener('click', () => {
+      const tabId = button.dataset.tab;
+      
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(content => content.classList.remove('active'));
+      
+      button.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+  });
 });
 
-// 计算 BS 和 LR
 document.getElementById('modelForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const modelSize = parseInt(document.getElementById('modelSize').value);
-    const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
+  const modelSize = parseFloat(document.getElementById('modelSize').value);
+  const trainingTokens = parseFloat(document.getElementById('trainingTokens').value);
 
-    if (isNaN(modelSize) || isNaN(trainingTokens)) {
-        alert("请输入有效的数字！");
-        return;
-    }
+  // 输入验证
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+      if (!input.value || isNaN(input.value)) {
+          input.parentElement.classList.add('invalid');
+      } else {
+          input.parentElement.classList.remove('invalid');
+      }
+  });
 
-    // 模拟计算逻辑（实际计算可以由后端提供）
-    const bs = modelSize + trainingTokens
-    const lr = modelSize - trainingTokens
+  if ([modelSize, trainingTokens].some(isNaN)) {
+      document.getElementById('result').innerHTML = `
+          <div class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              请输入有效的数字！
+          </div>
+      `;
+      return;
+  }
 
-    // 显示计算结果
-    document.getElementById('bsValue').textContent = `BS: ${bs.toFixed(2)}`;
-    document.getElementById('lrValue').textContent = `LR: ${lr.toFixed(6)}`;
+  // 改进的计算公式（示例）
+  const bs = (modelSize * 0.12 + trainingTokens * 0.0005).toFixed(2);
+  const lr = (0.0002 * Math.log(modelSize) + 0.000001 * Math.sqrt(trainingTokens)).toFixed(6);
+
+  // 动态生成结果
+  document.getElementById('result').innerHTML = `
+      <h3>计算结果：</h3>
+      <div class="result-item">
+          <span>BS (Batch Size):</span>
+          <span class="result-value">${bs}</span>
+      </div>
+      <div class="result-item">
+          <span>LR (Learning Rate):</span>
+          <span class="result-value">${lr}</span>
+      </div>
+  `;
+});
+
+// 输入验证实时反馈
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('input', () => {
+      input.parentElement.classList.toggle('invalid', !input.value || isNaN(input.value));
+  });
 });
