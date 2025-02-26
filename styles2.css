@@ -52,16 +52,52 @@ body {
     min-height: 300px;
 }
 
+/* 表单样式 */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+button {
+    padding: 0.8rem;
+    background-color: #0366d6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0350a1;
+}
+
+/* 结果区域 */
+#result {
+    margin-top: 20px;
+    font-size: 1.1rem;
+}
+
+#result p {
+    margin: 5px 0;
+}
+
+/* Tab 内容 */
 .tab-pane {
     display: none;
-    animation: fadeIn 0.3s ease;
 }
 
 .tab-pane.active {
     display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }

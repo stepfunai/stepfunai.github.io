@@ -19,8 +19,21 @@
         <div class="tab-content">
             <div id="tab1" class="tab-pane active">
                 <h2>第一个选项卡</h2>
-                <p>这里是第一个选项卡的内容区域，可以放置任意内容。</p>
-                <p>示例文本：欢迎来到我的网站！这里展示的是第一个选项卡的演示内容，后续可以替换为实际需要展示的信息。</p>
+                <form id="modelForm">
+                    <label for="modelSize">Model Size:</label>
+                    <input type="number" id="modelSize" placeholder="请输入Model Size" required>
+
+                    <label for="trainingTokens">Training Tokens:</label>
+                    <input type="number" id="trainingTokens" placeholder="请输入Training Tokens" required>
+
+                    <button type="submit">计算 BS 和 LR</button>
+                </form>
+
+                <div id="result">
+                    <h3>计算结果：</h3>
+                    <p id="bsValue">BS: </p>
+                    <p id="lrValue">LR: </p>
+                </div>
             </div>
 
             <div id="tab2" class="tab-pane">
