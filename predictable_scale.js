@@ -35,8 +35,8 @@ function initVisualization() {
       container.className = 'generated-pdf-container';
     
       // 生成文件名（根据实际文件命名规则调整）
-      // const fileName = `${modelType}_n${nValue}_d${dValue}.pdf`;
-      const fileName = `logo.png`
+      const fileName = `${modelType}_n${nValue}_d${dValue}.pdf`;
+      // const fileName = `logo.png`
       const pdfPath = `figures/${fileName}`;
 
       // 创建PDF展示元素
