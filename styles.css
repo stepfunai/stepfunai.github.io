@@ -115,7 +115,7 @@
   
 
   /* Tab 样式 */
-.tabs {
+  .tabs {
     margin: 20px;
   }
   
@@ -138,11 +138,15 @@
   }
   
   .tab-content {
-    display: none;
+    display: none; /* 默认为隐藏所有 Tab 内容 */
+  }
+  
+  .tab-panel {
+    display: none; /* 默认为隐藏 */
   }
   
   .tab-panel.active {
-    display: block;
+    display: block; /* 只有 active 的 Tab 内容显示 */
   }
   
   /* 返回链接样式 */
@@ -157,4 +161,5 @@
   .back-link:hover {
     text-decoration: underline;
   }
+  
   
