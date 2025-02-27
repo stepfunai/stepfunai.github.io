@@ -108,22 +108,32 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   }
 
   // 计算逻辑
-  const bs = calculateBS(modelSize, trainingTokens);
-  const lr = calculateLR(modelSize, trainingTokens);
+  const {bs, lr} = calculateBsLr(modelSize, trainingTokens);
 
   // 显示结果
   document.getElementById('bsValue').textContent = `BS: ${formatNumber(bs)}`;
   document.getElementById('lrValue').textContent = `LR: ${lr.toExponential(2)}`;
 });
 
-// 计算BS的函数
-function calculateBS(modelSize, tokens) {
-  return Math.round(modelSize / 1e6 * tokens / 1e6 * 2);
-}
+function calculateBsLr(modelSize, trainingTokens) {
+    /**
+     * 根据模型参数量和训练token量计算批次大小和学习率
+     * 公式：
+     * log(bs) = 2.187 - 0.1636*ln(modelSize) + 0.592*ln(trainingTokens)
+     * log(lr) = 0.5863 - 0.7129*ln(modelSize) + 0.3075*ln(trainingTokens)
+     */
+    const logBs = 2.187 
+        - 0.1636 * Math.log(modelSize) 
+        + 0.592 * Math.log(trainingTokens);
+    
+    const logLr = 0.5863 
+        - 0.7129 * Math.log(modelSize) 
+        + 0.3075 * Math.log(trainingTokens);
 
-// 计算LR的函数
-function calculateLR(modelSize, tokens) {
-  return 3e-4 * Math.sqrt(modelSize / 1e9) * Math.min(1, tokens / 1e9);
+    return {
+        batchSize: Math.exp(logBs),
+        learningRate: Math.exp(logLr)
+    };
 }
 
 // 数字格式化
