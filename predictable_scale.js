@@ -125,8 +125,8 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
 
   // 显示结果
-  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)}`;
-  document.getElementById('lrValue').textContent = `LR: ${learningRate.toExponential(2)}`;
+  document.getElementById('bsValue').textContent = `BS: ${formatLargeNumber(batchSize)}`;
+  document.getElementById('lrValue').textContent = `LR: ${formatSmallNumber(learningRate)}`;
 });
 
 function calculateBsLr(modelSize, trainingTokens) {
