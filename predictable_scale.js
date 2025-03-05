@@ -93,12 +93,31 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   // 默认显示第一个选项卡（确保只有一个active）
   document.querySelector('.tab-button').classList.add('active');
   document.querySelector('.tab-pane').classList.add('active');
-  const modelSize = parseInt(document.getElementById('modelSize').value);
-  const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
+  // const modelSize = parseInt(document.getElementById('modelSize').value);
+  // const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
   
-  // 输入验证
-  if (!modelSize || !trainingTokens || modelSize <= 0 || trainingTokens <= 0) {
-    showError("请输入有效的正整数值");
+  // 科学计数法解析
+  const parseScientific = (str) => {
+    try {
+      return Number(str.replace(/,/g, '')); // 支持去除逗号
+    } catch {
+      return NaN;
+    }
+  };
+
+  // 获取并转换输入值
+  const modelSize = parseScientific(document.getElementById('modelSize').value);
+  const trainingTokens = parseScientific(document.getElementById('trainingTokens').value);
+
+  // 增强的输入验证
+  if (!/^[0-9.eE+-]+$/.test(document.getElementById('modelSize').value) || 
+      !/^[0-9.eE+-]+$/.test(document.getElementById('trainingTokens').value)) {
+    showError("请输入有效的数字格式（支持科学计数法）");
+    return;
+  }
+
+  if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
+    showError("请输入有效的正数值");
     return;
   }
 
