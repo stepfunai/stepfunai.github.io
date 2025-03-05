@@ -93,40 +93,26 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   // 默认显示第一个选项卡（确保只有一个active）
   document.querySelector('.tab-button').classList.add('active');
   document.querySelector('.tab-pane').classList.add('active');
-  // const modelSize = parseInt(document.getElementById('modelSize').value);
-  // const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
+  const modelSize = parseInt(document.getElementById('modelSize').value);
+  const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
   
-  // 科学计数法解析
-  const parseScientific = (str) => {
-    try {
-      return Number(str.replace(/,/g, '')); // 支持去除逗号
-    } catch {
-      return NaN;
-    }
-  };
-
-  // 获取并转换输入值
-  const modelSize = parseScientific(document.getElementById('modelSize').value);
-  const trainingTokens = parseScientific(document.getElementById('trainingTokens').value);
-
-  // 增强的输入验证
-  if (!/^[0-9.eE+-]+$/.test(document.getElementById('modelSize').value) || 
-      !/^[0-9.eE+-]+$/.test(document.getElementById('trainingTokens').value)) {
-    showError("请输入有效的数字格式（支持科学计数法）");
-    return;
+  // 输入验证
+  if (!modelSize || !trainingTokens) {
+      showError("请填写所有必填字段");
+      return;
   }
-
-  if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
-    showError("请输入有效的正数值");
-    return;
+  
+  if (modelSize <= 0 || trainingTokens <= 0) {
+      showError("数值必须大于0");
+      return;
   }
 
   // 计算结果
   const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
 
   // 显示结果
-  document.getElementById('bsValue').textContent = `BS: ${formatLargeNumber(batchSize)}`;
-  document.getElementById('lrValue').textContent = `LR: ${formatSmallNumber(learningRate)}`;
+  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)} tokens`;
+  document.getElementById('lrValue').textContent = `LR: ${learningRate.toExponential(2)}`;
 });
 
 function calculateBsLr(modelSize, trainingTokens) {
@@ -151,18 +137,8 @@ function calculateBsLr(modelSize, trainingTokens) {
 }
 
 // 数字格式化
-function formatLargeNumber(num) {
-  if (num >= 1e6) {
-    return `${(num / 1e6).toFixed(1)}M`;
-  }
+function formatNumber(num) {
   return num.toLocaleString();
-}
-
-function formatSmallNumber(num) {
-  if (num < 0.001) {
-    return num.toExponential(2).replace('e-', '×10⁻');
-  }
-  return num.toFixed(6).replace(/\.?0+$/, '');
 }
 
 // 错误提示
