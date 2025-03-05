@@ -120,7 +120,7 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
     if (!isValidFormat(modelSizeInput) || !isValidFormat(trainingTokensInput)) {
       showError("格式错误：支持示例 1e8, 250000, 3.5×10^6");
       return;
-    }
+    } 
   
     const modelSize = parseNumber(modelSizeInput);
     const trainingTokens = parseNumber(trainingTokensInput);
