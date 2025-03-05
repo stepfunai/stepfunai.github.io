@@ -97,22 +97,17 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
   
   // 输入验证
-  if (!modelSize || !trainingTokens) {
-      showError("请填写所有必填字段");
-      return;
-  }
-  
-  if (modelSize <= 0 || trainingTokens <= 0) {
-      showError("数值必须大于0");
-      return;
+  if (!modelSize || !trainingTokens || modelSize <= 0 || trainingTokens <= 0) {
+    showError("请输入有效的正整数值");
+    return;
   }
 
-  // 计算逻辑
-  const {bs, lr} = calculateBsLr(modelSize, trainingTokens);
+  // 计算结果
+  const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
 
   // 显示结果
-  document.getElementById('bsValue').textContent = `BS: ${formatNumber(bs)}`;
-  document.getElementById('lrValue').textContent = `LR: ${lr.toExponential(2)}`;
+  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)} tokens`;
+  document.getElementById('lrValue').textContent = `LR: ${learningRate.toExponential(2)}`;
 });
 
 function calculateBsLr(modelSize, trainingTokens) {
