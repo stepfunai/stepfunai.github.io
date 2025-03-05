@@ -93,25 +93,48 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   // 默认显示第一个选项卡（确保只有一个active）
   document.querySelector('.tab-button').classList.add('active');
   document.querySelector('.tab-pane').classList.add('active');
-  const modelSize = parseInt(document.getElementById('modelSize').value);
-  const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
+  // const modelSize = parseInt(document.getElementById('modelSize').value);
+  // const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
   
-  // 输入验证
-  if (!modelSize || !trainingTokens) {
-      showError("请填写所有必填字段");
-      return;
-  }
+    // 获取原始输入值
+    const modelSizeInput = document.getElementById('modelSize').value;
+    const trainingTokensInput = document.getElementById('trainingTokens').value;
   
-  if (modelSize <= 0 || trainingTokens <= 0) {
-      showError("数值必须大于0");
+    // 预处理输入：移除逗号并转换科学计数法
+    const preprocessInput = (str) => {
+      return str.replace(/,/g, '').replace(/×10\^?/g, 'e'); // 兼容中文乘号
+    };
+  
+    // 解析数值
+    const parseNumber = (str) => {
+      const cleaned = preprocessInput(str);
+      return Number(cleaned);
+    };
+  
+    // 验证预处理后的输入
+    const isValidFormat = (str) => {
+      return /^[+-]?\d*\.?\d+([eE][+-]?\d+)?$/.test(preprocessInput(str));
+    };
+  
+    // 输入验证
+    if (!isValidFormat(modelSizeInput) || !isValidFormat(trainingTokensInput)) {
+      showError("格式错误：支持示例 1e8, 250000, 3.5×10^6");
       return;
-  }
-
-  // 计算结果
-  const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
-
+    }
+  
+    const modelSize = parseNumber(modelSizeInput);
+    const trainingTokens = parseNumber(trainingTokensInput);
+  
+    if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
+      showError("请输入有效的正数");
+      return;
+    }
+  
+    // 执行计算
+    const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
+  
   // 显示结果
-  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)} tokens`;
+  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)}`;
   document.getElementById('lrValue').textContent = `LR: ${learningRate.toExponential(2)}`;
 });
 
