@@ -106,7 +106,7 @@ document.getElementById('modelForm').addEventListener('submit', function(e) {
   const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
 
   // 显示结果
-  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)} tokens`;
+  document.getElementById('bsValue').textContent = `BS: ${formatNumber(batchSize)}`;
   document.getElementById('lrValue').textContent = `LR: ${learningRate.toExponential(2)}`;
 });
 
@@ -132,8 +132,18 @@ function calculateBsLr(modelSize, trainingTokens) {
 }
 
 // 数字格式化
-function formatNumber(num) {
+function formatLargeNumber(num) {
+  if (num >= 1e6) {
+    return `${(num / 1e6).toFixed(1)}M`;
+  }
   return num.toLocaleString();
+}
+
+function formatSmallNumber(num) {
+  if (num < 0.001) {
+    return num.toExponential(2).replace('e-', '×10⁻');
+  }
+  return num.toFixed(6).replace(/\.?0+$/, '');
 }
 
 // 错误提示
