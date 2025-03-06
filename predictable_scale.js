@@ -72,12 +72,14 @@ function initDependentSelects() {
   }
 
   function updateNaOptions() {
+    const selectorGroup = document.getElementById('selectorGroup');
     const type = modelType.value;
     const nVal = nValue.value;
     naValue.innerHTML = '';
   
     if (type === 'Moe') {
       document.getElementById('naItem').style.display = 'block';
+      selectorGroup.classList.add('has-na');
       const naOptions = Object.keys(dependencies.Moe.N[nVal].Na);
       naOptions.forEach(val => {
         const option = document.createElement('option');
@@ -88,6 +90,7 @@ function initDependentSelects() {
       naValue.dispatchEvent(new Event('change'));
     } else {
       document.getElementById('naItem').style.display = 'none';
+      selectorGroup.classList.remove('has-na');
     }
   }
 
