@@ -54,7 +54,8 @@ function initDependentSelects() {
   const nValue = document.getElementById('nValue');
   const naValue = document.getElementById('naValue');
   const dValue = document.getElementById('dValue');
-
+  const selectorGroup = document.getElementById('selectorGroup');
+  
   function updateNOptions() {
     const type = modelType.value;
     nValue.innerHTML = '';
@@ -123,7 +124,23 @@ function initDependentSelects() {
     });
   }
 
-  modelType.addEventListener('change', updateNOptions);
+  function updateVisibility() {
+    const isMoe = modelType.value === 'Moe';
+    // 强制更新显示状态
+    naValue.parentElement.style.display = isMoe ? 'block' : 'none';
+    selectorGroup.classList.toggle('has-na', isMoe);
+  
+    // 强制重绘防止布局残留
+    selectorGroup.style.display = 'none';
+    selectorGroup.offsetHeight; // 触发回流
+    selectorGroup.style.display = 'grid';
+  }
+
+  modelType.addEventListener('change', () => {
+    updateNOptions();
+    updateVisibility(); // 新增可见性同步
+    updateDOptions();
+  });
   nValue.addEventListener('change', () => {
     modelType.value === 'Moe' ? updateNaOptions() : updateDOptions();
   });
