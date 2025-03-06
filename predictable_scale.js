@@ -55,7 +55,7 @@ function initDependentSelects() {
   const naValue = document.getElementById('naValue');
   const dValue = document.getElementById('dValue');
   const selectorGroup = document.getElementById('selectorGroup');
-  
+
   function updateNOptions() {
     const type = modelType.value;
     nValue.innerHTML = '';
@@ -127,6 +127,7 @@ function initDependentSelects() {
   function updateVisibility() {
     const isMoe = modelType.value === 'Moe';
     // 强制更新显示状态
+    naValue.parentElement.hidden = !isMoe; // 使用hidden属性替代style
     naValue.parentElement.style.display = isMoe ? 'block' : 'none';
     selectorGroup.classList.toggle('has-na', isMoe);
   
@@ -139,6 +140,10 @@ function initDependentSelects() {
   modelType.addEventListener('change', () => {
     updateNOptions();
     updateVisibility(); // 新增可见性同步
+    if (!isMoe) {
+      naValue.value = ''; // 清空残留值
+      dValue.innerHTML = ''; // 重置D选项
+    }
     updateDOptions();
   });
   nValue.addEventListener('change', () => {

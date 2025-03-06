@@ -161,7 +161,7 @@ button:hover {
     transition: all 0.3s ease;
   }
   
-  #naItem[hidden] {
+#naItem[hidden] {
     display: none !important;
     opacity: 0;
     transform: scale(0.95);
