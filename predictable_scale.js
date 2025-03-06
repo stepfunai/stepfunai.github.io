@@ -15,8 +15,111 @@ function initTabs() {
   });
 }
 
+// 依赖关系配置
+const dependencies = {
+  Dense: {
+    N: {
+      "214663680": ["4000000000", "11400000000", "20000000000", "100000000000"],
+      "268304384": ["5000000000", "14200000000", "25000000000", "80000000000"],
+      "429260800": ["8000000000", "22700000000", "40000000000", "50000000000"],
+      "536872960": ["10000000000", "28400000000", "50000000000"],
+      "1073741824": ["20000000000", "56900000000", "100000000000"]
+    }
+  },
+  Moe: {
+    N: {
+      "2150612992": {
+        Na: {
+          "187973632": ["2000000000", "4000000000", "8000000000", "20000000000"],
+          "232579072": ["2000000000", "4000000000", "8000000000", "20000000000"]
+        }
+      },
+      "2155174912": {
+        Na: {
+          "590436352": ["2000000000", "4000000000", "8000000000", "20000000000"]
+        }
+      },
+      "2156188672": {
+        Na: {
+          "1241270272": ["2000000000", "4000000000", "8000000000", "20000000000"]
+        }
+      }
+    }
+  }
+};
+
+// 新增级联选择逻辑
+function initDependentSelects() {
+  const modelType = document.getElementById('modelType');
+  const nValue = document.getElementById('nValue');
+  const naValue = document.getElementById('naValue');
+  const dValue = document.getElementById('dValue');
+
+  function updateNOptions() {
+    const type = modelType.value;
+    nValue.innerHTML = '';
+    const options = type === 'Dense' 
+      ? Object.keys(dependencies.Dense.N) 
+      : Object.keys(dependencies.Moe.N);
+  
+    options.forEach(val => {
+      const option = document.createElement('option');
+      option.value = val;
+      option.textContent = val;
+      nValue.appendChild(option);
+    });
+    nValue.dispatchEvent(new Event('change'));
+  }
+
+  function updateNaOptions() {
+    const type = modelType.value;
+    const nVal = nValue.value;
+    naValue.innerHTML = '';
+  
+    if (type === 'Moe') {
+      document.getElementById('naItem').style.display = 'block';
+      const naOptions = Object.keys(dependencies.Moe.N[nVal].Na);
+      naOptions.forEach(val => {
+        const option = document.createElement('option');
+        option.value = val;
+        option.textContent = val;
+        naValue.appendChild(option);
+      });
+      naValue.dispatchEvent(new Event('change'));
+    } else {
+      document.getElementById('naItem').style.display = 'none';
+    }
+  }
+
+  function updateDOptions() {
+    const type = modelType.value;
+    dValue.innerHTML = '';
+  
+    let options = [];
+    if (type === 'Dense') {
+      options = dependencies.Dense.N[nValue.value];
+    } else {
+      options = dependencies.Moe.N[nValue.value].Na[naValue.value];
+    }
+  
+    options.forEach(val => {
+      const option = document.createElement('option');
+      option.value = val;
+      option.textContent = val;
+      dValue.appendChild(option);
+    });
+  }
+
+  modelType.addEventListener('change', updateNOptions);
+  nValue.addEventListener('change', () => {
+    modelType.value === 'Moe' ? updateNaOptions() : updateDOptions();
+  });
+  naValue.addEventListener('change', updateDOptions);
+
+  updateNOptions();
+}
+
 // 初始化可视化功能
-// scripts.js 修改后的可视化功能
 function initVisualization() {
   const generateBtn = document.getElementById('generateBtn');
   const vizContainer = document.getElementById('visualization');
@@ -26,6 +129,7 @@ function initVisualization() {
       const modelType = document.getElementById('modelType').value;
       const nValue = document.getElementById('nValue').value;
       const dValue = document.getElementById('dValue').value;
+      const naValue = document.getElementById('naValue').value;
 
       // 清除旧内容
       vizContainer.innerHTML = '';
@@ -35,7 +139,13 @@ function initVisualization() {
       container.className = 'generated-pdf-container';
     
       // 生成文件名（根据实际文件命名规则调整）
-      const fileName = `${modelType}_n${nValue}_d${dValue}.pdf`;
+      let fileName;
+      if (modelType === 'Dense') {
+        fileName = `heatmap_N${nValue}_D${dValue}.pdf`;
+      } else {
+        const na = document.getElementById('naValue').value;
+        fileName = `heatmap_N${nValue}_D${dValue}_Na${naValue}.pdf`;
+      }
       // const fileName = `logo.png`
       const pdfPath = `figures/${fileName}`;
 
@@ -75,8 +185,10 @@ function initVisualization() {
   });
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();          // 只需初始化一次
+  initDependentSelects();
   initVisualization();
 
   // 设置默认激活状态（仅在初次加载时）
