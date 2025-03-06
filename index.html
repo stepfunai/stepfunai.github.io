@@ -4,37 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StepAI Research</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- 导航栏 -->
   <header>
     <div class="logo">
-      <img src="figures/logo.png" alt="Logo">
+      <img src="figures/logo.png" alt="Logo" class="logo-hover">
     </div>
     <nav>
       <ul>
-        <li><a href="index.html">Blog</a></li>
-        <li><a href="https://www.stepfun.com">About</a></li>
-        <li><a href="https://yuewen.cn">Try Yuewen</a></li>
+        <li><a href="index.html" class="nav-link"><span>📖</span> Blog</a></li>
+        <li><a href="https://www.stepfun.com" class="nav-link"><span>🌐</span> About</a></li>
+        <li><a href="https://yuewen.cn" class="nav-link cta-button"><span>🚀</span> Try Yuewen</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- 主标题 -->
   <section class="main-title">
-    <h1>StepAI Research</h1>
+    <div class="title-container">
+      <h1 class="title-text">StepAI Research</h1>
+      <div class="gradient-bar"></div>
+    </div>
   </section>
 
   <!-- 博客条目列表 -->
   <section class="blog-list">
     <article class="blog-item">
-      <a href="predictable_scale.html">
-        <h2>Predictable Scale</h2>
+      <a href="predictable_scale.html" class="blog-link">
+        <div class="hover-indicator"></div>
+        <h2 class="blog-title">Predictable Scale</h2>
         <p class="description">This is our introduction...</p>
         <div class="meta">
-            <span>February 26, 2025</span>
-            <span>StepFun Pretrain Team</span>
+          <span class="date">📅 February 26, 2025</span>
+          <span class="author">👥 StepFun Pretrain Team</span>
         </div>
       </a>
     </article>
