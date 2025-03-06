@@ -121,7 +121,7 @@ button:hover {
     grid-template-columns: repeat(3, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
-    transition: grid-template-columns 0.3s ease;
+    transition: grid-template-columns 0.3s ease, gap 0.3s ease;
   }
 /* 当包含Na选项时的布局 */
 .selector-group.has-na {
@@ -155,11 +155,12 @@ button:hover {
     transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
-[style*="display: none"] {
+#naItem[style*="display: none"] {
     display: none !important;
+    height: 0;
     opacity: 0;
-    transform: scale(0.9);
-  }
+    pointer-events: none;
+}
 
 .select-item:hover {
     transform: translateY(-2px);

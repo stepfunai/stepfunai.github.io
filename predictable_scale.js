@@ -58,6 +58,11 @@ function initDependentSelects() {
   function updateNOptions() {
     const type = modelType.value;
     nValue.innerHTML = '';
+  
+    // 重置相关选项
+    naValue.innerHTML = '';
+    dValue.innerHTML = '';
+  
     const options = type === 'Dense' 
       ? Object.keys(dependencies.Dense.N) 
       : Object.keys(dependencies.Moe.N);
@@ -68,18 +73,20 @@ function initDependentSelects() {
       option.textContent = val;
       nValue.appendChild(option);
     });
+  
+    // 设置默认值并触发更新
+    nValue.value = options[0] || '';
     nValue.dispatchEvent(new Event('change'));
   }
 
+  // 增强选项更新逻辑
   function updateNaOptions() {
-    const selectorGroup = document.getElementById('selectorGroup');
     const type = modelType.value;
     const nVal = nValue.value;
     naValue.innerHTML = '';
-  
+
     if (type === 'Moe') {
       document.getElementById('naItem').style.display = 'block';
-      selectorGroup.classList.add('has-na');
       const naOptions = Object.keys(dependencies.Moe.N[nVal].Na);
       naOptions.forEach(val => {
         const option = document.createElement('option');
@@ -87,10 +94,13 @@ function initDependentSelects() {
         option.textContent = val;
         naValue.appendChild(option);
       });
+      // 设置默认选中项
+      naValue.value = naOptions[0] || '';
       naValue.dispatchEvent(new Event('change'));
     } else {
       document.getElementById('naItem').style.display = 'none';
-      selectorGroup.classList.remove('has-na');
+      // 清除残留值
+      naValue.value = '';
     }
   }
 
@@ -132,7 +142,6 @@ function initVisualization() {
       const modelType = document.getElementById('modelType').value;
       const nValue = document.getElementById('nValue').value;
       const dValue = document.getElementById('dValue').value;
-      const naValue = document.getElementById('naValue').value;
 
       // 清除旧内容
       vizContainer.innerHTML = '';
@@ -146,7 +155,7 @@ function initVisualization() {
       if (modelType === 'Dense') {
         fileName = `heatmap_N${nValue}_D${dValue}.pdf`;
       } else {
-        const na = document.getElementById('naValue').value;
+        const naValue = document.getElementById('naValue').value;
         fileName = `heatmap_N${nValue}_D${dValue}_Na${naValue}.pdf`;
       }
       // const fileName = `logo.png`
